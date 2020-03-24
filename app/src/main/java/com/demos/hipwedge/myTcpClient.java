@@ -12,7 +12,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.SocketException;
 import java.util.Arrays;
 
 public class myTcpClient extends Thread {
@@ -42,6 +45,7 @@ public class myTcpClient extends Thread {
     public void onMessageEvent(MessageEvent event) {
         Log.d(CONST.TAG, "TcpClient onMessageEvent: "+event.message);
         if (event.messageDirection== MessageEvent.MessageDirection.TRANSMIT){
+
             send(event.message);
         }
     };
@@ -60,8 +64,14 @@ public class myTcpClient extends Thread {
                         Log.i("Send Method", "Outgoing : " + _msg);
                         } catch (UnsupportedEncodingException ex) {
                             Log.e("Send Method", ex.toString());
+                        }catch (SocketException ex) {
+                            Log.e("Send Method", ex.toString());
+                            stopClient();
+                            startClient();
                         } catch (IOException ex) {
                             Log.e("Send Method", ex.toString());
+                            stopClient();
+                            startClient();
                         }
 /*                    }
 
@@ -80,12 +90,15 @@ public class myTcpClient extends Thread {
     public void run() {
         running = true;
         int readCount=0;
+        sock=new Socket();
+
         do {
             try {
                 serverAddr = InetAddress.getByName(serverIP);
 
                 Log.i("TCP Client", "C: Connecting...");
-                sock = new Socket(serverAddr, serverPort);
+                //sock =  new Socket(serverAddr, serverPort);
+                sock.connect(new InetSocketAddress(serverAddr, serverPort));
                 EventBus.getDefault().post(new MessageEvent(MessageEvent.MessageDirection.STATUS, MessageEvent.MessageStatus.CONNECTED));
                 try {
                     out = new DataOutputStream(sock.getOutputStream());
@@ -115,6 +128,8 @@ public class myTcpClient extends Thread {
                 try {
                     Log.d(CONST.TAG, "TcpClient thread exception: "+e.getMessage()+" retrying in 1 second...");
                     Thread.sleep(1000);
+                    stopClient();
+                    startClient();
                 }catch (InterruptedException ex){
                     Log.d(CONST.TAG, "TcpClient thread interrupted: "+ex.getMessage());
                 }
