@@ -47,3 +47,5 @@ The main activity HIPWedge will show the scanned data and the data received back
 Just to give you an idea of the server application.
 
 ![HipWedge](https://github.com/hjgode/HIPWedge/blob/master/doc/socketwedge.png)
+
+see [SocketWedge](https://github.com/hjgode/SocketWedge)
