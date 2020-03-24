@@ -6,6 +6,8 @@ This tool and code is only for demo purposes as a proof-of-concept. There is onl
 
 HIPWedge is a tool for Hon3w3ll Android devices with built-in barcode scanner. The tool will capture all scanned barcodes and transmit to a TCP/IP server (see SocketWedge), for example, on a Windows PC. The socket server can then translate the received barcode data into key strokes and insert data into text fields/input.
 
+IMAGE
+
 ## Installation
 
 Install the apk the normal way and then configure the device to use the provided DataEditing plugin: go to Settings > Honeywell Settings > Scanning > Internal Scanner > Default profile > Data Processing Settings > Data Editing Plugin. When the Data Editing Plugin setting is opened, the Plugin part of the tool should be listed as  com.demos.hipwedge/.DataEditRecv. Select this plugin and it will show below Data Editing Plugin above Settings.
